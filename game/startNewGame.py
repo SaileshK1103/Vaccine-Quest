@@ -2,20 +2,59 @@ import uuid
 
 from databasae.databaseConnection import create_connection
 
-
-def startNewGame(screen_name):
+# Player registration function
+def register_player(player_name,email):
     connection = create_connection()
     cursor = connection.cursor()
-    game_id = str(uuid.uuid4())
-    initial_co2_budget = 10000
-    initial_location = "EFHK"  # Example airport
-
-    insert_query = ("INSERT INTO game (id, co2_consumed, co2_budget, location, screen_name) "
-                    "VALUES (%s, %s, %s, %s, %s)")
-    cursor.execute(insert_query, (game_id, 0, initial_co2_budget, initial_location, screen_name))
+    cursor.execute("INSERT INTO player_profile (player_name,email) VALUES (%s,%s)",
+                   (player_name,email))
     connection.commit()
-
-    cursor.close()
+    player_id = cursor.lastrowid
     connection.close()
+    return player_id
 
-    return game_id
+# Initialize game settings
+def initialize_game(player_id):
+    return {
+        'player_id': player_id,
+        'money': 5000,
+        'fuel': 100,
+        'base_airport': 'Base Airport',
+        'inventory': {}
+    }
+
+# Travel function
+def travel(game_state, destination):
+    print(f"Travelling to {destination}")
+    game_state['fuel'] -= 10 #simulate fuel deduction
+    if game_state['fuel'] <= 0:
+        print("You have run out of fuel!")
+        return False
+    else:
+        return True
+
+# Collect element function
+def collect_element(game_state, element_id):
+    connection = create_connection()
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO player_inventory (player_id, element_id) VALUES (%s, %s)",
+                       (game_state['player_id'], element_id))
+    connection.commit()
+    connection.close()
+    game_state['inventory'][element_id] = True
+    print(f"Collected element ID: {element_id}")
+
+# Check inventory function
+def check_inventory(game_state):
+    print("Your inventory:")
+    for element_id in game_state['inventory'].keys():
+        print(f"Element ID: {element_id}")
+
+# Hint function
+
+def get_hint(level):
+    hints = {
+        1: "Travel to the airport known for its icy cold conditions to find the base solution.",
+        2: "Head to the next airport for an essential ingredient.",
+    }
+    return hints.get(level, "No more hints available.")
