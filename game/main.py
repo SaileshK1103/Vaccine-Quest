@@ -8,18 +8,20 @@ def main():
     print("Welcome to Quest Vaccine Game!")
     player_name = input("Enter your name: ")
     email = input("Enter your email: ")
-    player_id = register_player(player_name,email)
-    game_state = initialize_game(player_id)
+    airport_ident = input("Enter your airport_ident code: ")
+    player_id = register_player(player_name,email, airport_ident)
+    game_state = initialize_game(player_id,airport_ident)
+    print(game_state)
     current_level = 1
 
     while True:
-        print(f"\n You are at your base station: {game_state['base_airport']}")
+        print(f"\n You are at your base station: {game_state['airport_ident']}")
         print(f"Money: $ {game_state['money']} | Fuel: {game_state['fuel']}")
         print("Actions: 1. Travel 2. Check Inventory 3. USe Hint 4. Formulate Vaccine 5. Quit")
         action = input("Choose your action: ")
 
         if action == "1":
-            destination = input("Enter the destination airport")
+            destination = input("Enter the destination airport: ")
             if travel(game_state, destination): # Simulate collecting an element
                 collect_element(game_state,1)
                 current_level +=1

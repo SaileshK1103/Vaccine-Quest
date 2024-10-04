@@ -3,23 +3,23 @@ import uuid
 from databasae.databaseConnection import create_connection
 
 # Player registration function
-def register_player(player_name,email):
+def register_player(player_name,email,airport_ident):
     connection = create_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO player_profile (player_name,email) VALUES (%s,%s)",
-                   (player_name,email))
+    cursor.execute("INSERT INTO player_profile (player_name,email,airport_ident) VALUES (%s,%s,%s)",
+                   (player_name,email,airport_ident))
     connection.commit()
     player_id = cursor.lastrowid
     connection.close()
     return player_id
 
 # Initialize game settings
-def initialize_game(player_id):
+def initialize_game(player_id, airport_ident):
     return {
         'player_id': player_id,
         'money': 5000,
         'fuel': 100,
-        'base_airport': 'Base Airport',
+        'airport_ident': airport_ident,
         'inventory': {}
     }
 
@@ -37,8 +37,8 @@ def travel(game_state, destination):
 def collect_element(game_state, element_id):
     connection = create_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO player_inventory (player_id, element_id) VALUES (%s, %s)",
-                       (game_state['player_id'], element_id))
+    cursor.execute("INSERT INTO player_inventory (player_id, element_id, collected) VALUES (%s, %s,%s)",
+                       (game_state['player_id'], element_id,1))
     connection.commit()
     connection.close()
     game_state['inventory'][element_id] = True
