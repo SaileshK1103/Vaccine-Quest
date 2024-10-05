@@ -216,47 +216,15 @@ while not game_over:
     print(f"You have ${money:.0f} and {player_range:.0f}km of range.")
 
     # Option to buy extra range
-    buy_range = input('Do you want to buy extra range? (Y/N): ')
-    if buy_range.upper() == 'Y':
-        player_range, money = buy_extra_range(player_range, money)
-
-    # Check if current airport has content
-    contents = check_port_contents(game_id, current_airport)
-    for content in contents:
-        if content['found'] == 0:
-            if content['content_type'] == 'element':
-                # Automatically collect the element
-                collected_elements.append(content['content_value'])
-                print(f"You found Element {content['content_value']} at {airport['name']}!")
-                mark_content_found(content['id'])
-            elif content['content_type'] == 'lucky_box':
-                # Ask if the player wants to open the lucky box
-                question = input('Do you want to open the lucky box for $100? (Y/N): ')
-                if question.upper() == 'Y':
-                    if money >= 100:
-                        money -= 100
-                        # Randomly decide the lucky box content
-                        lucky_box_result = choice(['A', 'B', 'C', 'D', 'Empty'])
-                        if lucky_box_result in ['A', 'B', 'C', 'D']:
-                            if lucky_box_result in collected_elements:
-                                print(f"The lucky box is empty. You already have Element {lucky_box_result}.")
-                            else:
-                                collected_elements.append(lucky_box_result)
-                                print(f"Congratulations! You found Element {lucky_box_result} in the lucky box.")
-                        else:
-                            print('The lucky box is empty.')
-                        mark_content_found(content['id'])
-                    else:
-                        print("You don't have enough money to open the lucky box.")
+    buy_range = input('Do you want to buy extra range? (Y/N): ').strip().upper()
+    if buy_range == 'Y':
+        if money < 100:  # Check if the player has money to buy any range
+            print("You don't have enough money to buy extra range.")
+        else:
+            player_range, money = buy_extra_range(player_range, money)
 
     # Pause
     input("\033[32mPress Enter to continue...\033[0m")
-
-    # Check if all required elements are collected
-    required_elements = ['A', 'B', 'C', 'D']  # Adjust based on game rules
-    if all(elem in collected_elements for elem in required_elements):
-        win = True
-        game_over = True
 
     # Show airports in range
     airports = airports_in_range(current_airport, all_airports, player_range)
@@ -264,35 +232,57 @@ while not game_over:
     if len(airports) == 0:
         print('You are out of range.')
         game_over = True
+        break  # Exit the loop if there are no airports in range
     else:
         print("Airports:")
         for airport in airports:
             ap_distance = calculate_distance(current_airport, airport['ident'])
             print(f"{airport['name']}, ICAO: {airport['ident']}, Distance: {ap_distance:.0f}km")
 
-        # Ask for destination
-        dest = input('Enter destination ICAO: ').upper()
-        # Validate destination
-        dest_airports = [airport['ident'] for airport in airports]
-        if dest not in dest_airports:
-            print("Invalid destination. Please choose an airport within range.")
-            continue
-
-        selected_distance = calculate_distance(current_airport, dest)
-        if selected_distance > player_range:
-            print("You don't have enough range to fly to this destination.")
-            continue
-        player_range -= selected_distance
-        update_location(dest, player_range, money, game_id)
-        current_airport = dest
-        if player_range < 0:
-            game_over = True
+    # Ask for destination only if there are airports in range
+    dest = input('Enter destination ICAO: ').strip().upper()
+    # Validate destination
+    dest_airports = [airport['ident'] for airport in airports]
+    if dest not in dest_airports:
+        print("Invalid destination. Please choose an airport within range.")
+        continue
+    # calculate distance to destination
+    selected_distance = calculate_distance(current_airport, dest)
+    if selected_distance > player_range:
+        print("You don't have enough range to fly to this destination.")
+        continue
+    player_range -= selected_distance
+    update_location(dest, player_range, money, game_id)
+    current_airport = dest
+    if player_range < 0:
+        game_over = True
+    # Check for contents at new airport
+    contents = check_port_contents(game_id, current_airport)
+    if contents:
+        for content in contents:
+            if content['content_type'] == 'element':
+                print(f"You found Element {content['content_value']} at {current_airport}!")
+                # Add the element to the collected_elements list
+                if content['content_value'] not in collected_elements:
+                    collected_elements.append(content['content_value'])
+                # Mark the element as found
+                mark_content_found(content['id'])
+            elif content['content_type'] == 'lucky_box':
+                print(f"A lucky box is available at {current_airport}.")
+                # Handle the lucky box scenario if the player wants to open it.
+    else:
+        print(f"No content found at {current_airport}.")
 
 # GAME OVER
 # Show game result
 print(f"{'You won!' if win else 'You lost!'}")
 if win:
     print(f"Congratulations! You collected all required elements: {', '.join(collected_elements)}.")
-    print(f"You have ${money:.0f} left and {player_range:.0f}km of range remaining.")
 else:
-    print(f"You have ${money:.0f} and your range is {player_range:.0f}km.")
+    print(f"You have ${money:.0f} left and {player_range:.0f}km of range remaining.")
+
+# Show collected elements regardless of win/loss
+if collected_elements:
+    print(f"You collected the following elements: {', '.join(collected_elements)}.")
+else:
+    print("You didn't collect any elements.")
