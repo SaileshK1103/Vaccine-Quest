@@ -25,13 +25,13 @@ Failure to plan correctly will result in running out of resources, potentially c
 
 ### Databse Design
 - Drop all tables except airport and country,creat new tables : game, element and port_contents. sql query as below:
-SET FOREIGN_KEY_CHECKS = 0;
 
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS goal;
 DROP TABLE IF EXISTS goal_reached;
-
 SET FOREIGN_KEY_CHECKS = 1;
+
 CREATE TABLE game (
     id INT AUTO_INCREMENT PRIMARY KEY,
     money DECIMAL(10, 2) NOT NULL,
