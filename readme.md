@@ -25,7 +25,6 @@ Failure to plan correctly will result in running out of resources, potentially c
 
 ### Databse Design
 ### Game Flow
-###
-###Links：
-[Trello board](https://trello.com/b/GG9OKmbC/challenger-flight-game-project)
-[Project tracking sheet](https://docs.google.com/spreadsheets/d/1vuq3BxNBDeG4BTiAt0iLGx4ohJ9QgnmPnivLulsLMhw/edit?gid=0#gid=0)
+### Links：
+- [Trello board](https://trello.com/b/GG9OKmbC/challenger-flight-game-project)
+- [Project tracking sheet](https://docs.google.com/spreadsheets/d/1vuq3BxNBDeG4BTiAt0iLGx4ohJ9QgnmPnivLulsLMhw/edit?gid=0#gid=0)
