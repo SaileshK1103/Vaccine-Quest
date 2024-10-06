@@ -267,7 +267,7 @@ while not game_over:
                     if money >= 100:
                         money -= 100
                         # Randomly decide the lucky box content
-                        lucky_box_result = random.choice(['A', 'B', 'C', 'D', 'Empty'])
+                        lucky_box_result = choice(['A', 'B', 'C', 'D', 'Empty'])
                         if lucky_box_result in ['A', 'B', 'C', 'D']:
                             if lucky_box_result in collected_elements:
                                 print(f"The lucky box is empty. You already have Element {lucky_box_result}.")
