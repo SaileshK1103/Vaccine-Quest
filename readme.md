@@ -4,7 +4,7 @@ The purpose of this document is to provide a detailed and comprehensive requirem
 
 ### 2.Vision
 
-The Flight Simulator Game "Vaccine Quest" is a console-based, interactive game where the player takes on a mission to save the world from a global health crisis by collecting essential vaccine components. The game provides an educational and engaging experience, where players fly between airports in Europe to collect elements A, B, and C, which are necessary for the creation of a vaccine.
+The Flight Simulator Game "Vaccine Quest" is a console-based, interactive game where the player takes on a mission to save the world from a global health crisis by collecting essential vaccine components. The game provides an educational and engaging experience, where players fly between airports in Europe to collect elements A, B, C and D, which are necessary for the creation of a vaccine.
 
 The player starts at a random airport with a certain budget and a limited range for their aircraft. At each airport, the player may find one of the essential elements or a lucky box, which they can open by spending part of their budget. The lucky box may contain an additional vaccine component or be empty. The objective of the game is to collect all three elements within the given budget and range, thereby winning the game. The player must carefully decide which airports to visit while managing their resources.
 
