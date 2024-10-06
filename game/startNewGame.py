@@ -1,18 +1,7 @@
-import textwrap
 from random import random, shuffle, choice
 from geopy.distance import geodesic
 from databasae.databaseConnection import connection
 
-story = '''
-Your mission is to fly to different airports to collect 3 essential elements (A, B, and C) needed to 
-create a vaccine. A random airport will also contain a lucky box, which costs $100 to open. The lucky box may 
-contain an additional element or be empty. If you collect all three elements (A, B, and C) within the budget 
-provided at the start of the game, you win!
-'''
-wrapper = textwrap.TextWrapper(width=80, break_long_words=False, replace_whitespace=False)
-word_list = wrapper.wrap(text=story)
-def getStory():
-    return word_list
 def get_airports():
     sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type='large_airport' ORDER BY RAND() LIMIT 7;"""
     cursor = connection.cursor(dictionary=True)
