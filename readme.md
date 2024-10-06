@@ -84,5 +84,5 @@ CREATE TABLE element (
 INSERT INTO element (name, total_quantity) VALUES ('A', 4), ('B', 3), ('C', 3), ('D', 2) ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
 
 ### Links：
-- [Trello board](https://trello.com/b/GG9OKmbC/challenger-flight-game-project)
+- [Trello board](https://trello.com/invite/b/66fe78af1372c2113a78bb63/ATTIcf230239528edd2871486693b07ee3a0C2140598/challenger-flight-game-project)
 - [Project tracking sheet](https://docs.google.com/spreadsheets/d/1vuq3BxNBDeG4BTiAt0iLGx4ohJ9QgnmPnivLulsLMhw/edit?gid=0#gid=0)
