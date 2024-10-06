@@ -50,8 +50,8 @@ The game should promote strategic decision-making and resource management, encou
 - User Interface Requirement
 The game should have a simple, console-based interface that is easy to understand for users who are not familiar with complex gaming systems.
 
-### 5.Databse Design
-- Drop all tables except airport and country,creat new tables : game, element and port_contents. Sql query as below:
+### 5.Database Design
+- Drop all tables except airport and country, and create new tables: game, element, and port_contents. Sql query as below:
 
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS game;
@@ -78,10 +78,10 @@ CREATE TABLE port_contents (
 CREATE TABLE element (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name CHAR(1) NOT NULL,  -- Values like A, B, C, D
-    total_quantity INT NOT NULL  -- Quantities: A:4, B:3, C:3, D:2
+    total_quantity INT NOT NULL  -- Quantities: A:1, B:1, C:1, D:1
      );
 
-INSERT INTO element (name, total_quantity) VALUES ('A', 4), ('B', 3), ('C', 3), ('D', 2) ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
+INSERT INTO element (name, total_quantity) VALUES ('A', 1), ('B', 1), ('C', 1), ('D', 1) ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
 
 ![gameERD](https://github.com/user-attachments/assets/3b955419-ed3a-4a3a-ae28-9f35f6dde81e)
 
