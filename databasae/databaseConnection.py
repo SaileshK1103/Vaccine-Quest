@@ -24,14 +24,14 @@ CREATE TABLE game (
 CREATE TABLE element (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name CHAR(1) NOT NULL,  -- A, B, C, D
-    total_quantity INT NOT NULL  -- A:4, B:3, C:3, D:2
+    total_quantity INT NOT NULL  -- A:1, B:1, C:1, D:1
 );
 
 INSERT INTO element (name, total_quantity) VALUES
-('A', 4),
-('B', 3),
-('C', 3),
-('D', 2)
+('A', 1),
+('B', 1),
+('C', 1),
+('D', 1)
 ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
 
 CREATE TABLE port_contents (
