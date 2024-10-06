@@ -39,13 +39,13 @@ The following functional requirements are presented as user stories:
 Fetching airport information from the database must take a maximum of two seconds to ensure smooth gameplay.
 
 - Usability Requirement
-The player must receive immediate feedback after performing an action (e.g., collecting an element, opening a lucky box) to maintain engagement and provide clarity.
+The player must receive immediate feedback after performing an action (e.g., collecting an element, or opening a lucky box) to maintain engagement and provide clarity.
 
 - Accessibility Requirement
 The game must be designed to be accessible to players aged 12 and above, with straightforward text instructions and no inappropriate content.
 
 - Sustainability Requirement
-The game should promote strategic decision-making and resource management, encouraging players to think critically about efficient use of resources, aligning with themes of sustainability.
+The game should promote strategic decision-making and resource management, encouraging players to think critically about the efficient use of resources, and aligning with themes of sustainability.
 
 - User Interface Requirement
 The game should have a simple, console-based interface that is easy to understand for users who are not familiar with complex gaming systems.
@@ -82,6 +82,8 @@ CREATE TABLE element (
      );
 
 INSERT INTO element (name, total_quantity) VALUES ('A', 4), ('B', 3), ('C', 3), ('D', 2) ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
+
+![gameERD](https://github.com/user-attachments/assets/3b955419-ed3a-4a3a-ae28-9f35f6dde81e)
 
 ### Links：
 - [Trello board](https://trello.com/invite/b/66fe78af1372c2113a78bb63/ATTIcf230239528edd2871486693b07ee3a0C2140598/challenger-flight-game-project)
