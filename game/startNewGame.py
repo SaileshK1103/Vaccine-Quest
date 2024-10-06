@@ -1,10 +1,18 @@
 import textwrap
 from random import random, shuffle, choice
-from turtle import distance
-
 from geopy.distance import geodesic
 
-from databasae.databaseConnection import connection
+import mysql.connector
+connection = mysql.connector.connect(
+    host='localhost',
+    port=3306,
+    database='vaccine_game',
+    user='xxx',
+    password='xxx',
+    charset='utf8mb4',
+    collation='utf8mb4_unicode_ci'
+)
+
 
 story = '''
 Your mission is to fly to different airports to collect 3 essential elements (A, B, and C) needed to 
