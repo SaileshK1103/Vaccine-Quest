@@ -1,11 +1,10 @@
 ### 1.Introduction
 
 The purpose of this document is to provide a detailed and comprehensive requirement specification for the Game "Vaccine Quest". The document is targeted towards developers, project stakeholders, and testers, outlining the exact functionalities and requirements of the game. It aims to eliminate ambiguities in the development process, ensuring a common understanding of how the game should work and how users will interact with it. The document is organized into four main chapters: Introduction, Vision, Functional Requirements, and Quality Requirements.
-![image](https://github.com/user-attachments/assets/7f1f449e-86ad-4201-8c9e-5fe51c8a33f2)
 
 ### 2.Vision
 
-The Flight Simulator Game "Vaccine Collection Mission" is a console-based, interactive game where the player takes on a mission to save the world from a global health crisis by collecting essential vaccine components. The game provides an educational and engaging experience, where players fly between airports in Europe to collect elements A, B, and C, which are necessary for the creation of a vaccine.
+The Flight Simulator Game "Vaccine Quest" is a console-based, interactive game where the player takes on a mission to save the world from a global health crisis by collecting essential vaccine components. The game provides an educational and engaging experience, where players fly between airports in Europe to collect elements A, B, and C, which are necessary for the creation of a vaccine.
 
 The player starts at a random airport with a certain budget and a limited range for their aircraft. At each airport, the player may find one of the essential elements or a lucky box, which they can open by spending part of their budget. The lucky box may contain an additional vaccine component or be empty. The objective of the game is to collect all three elements within the given budget and range, thereby winning the game. The player must carefully decide which airports to visit while managing their resources.
 
@@ -16,8 +15,6 @@ The game proceeds in stages:
 - The player continues to visit airports until they have collected all required elements or run out of resources.
 
 The main idea is to provide a strategic challenge where players must optimize their choices to achieve the goal while managing limited resources.
-
-![image](https://github.com/user-attachments/assets/b841e648-1bc1-445b-b57e-cc366ee8fbfc)
 
 ### 3. Functional Requirements
 The following functional requirements are presented as user stories:
@@ -35,7 +32,6 @@ The following functional requirements are presented as user stories:
 - As a player, I am notified if my chosen destination is not within range, so that I can choose a valid airport.
 - As a player, I can collect all required elements to win the game, so that I achieve my mission.
 - As a player, I receive a game-over message if I run out of resources, so that I know when the game ends.
-![image](https://github.com/user-attachments/assets/0cfc5029-78ee-439f-b270-e668309c073a)
 
 ### 4. Quality Requirements
 
@@ -54,8 +50,8 @@ The game should promote strategic decision-making and resource management, encou
 - User Interface Requirement
 The game should have a simple, console-based interface that is easy to understand for users who are not familiar with complex gaming systems.
 
-### Databse Design
-- Drop all tables except airport and country,creat new tables : game, element and port_contents. sql query as below:
+### 5.Databse Design
+- Drop all tables except airport and country,creat new tables : game, element and port_contents. Sql query as below:
 
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS game;
@@ -87,7 +83,6 @@ CREATE TABLE element (
 
 INSERT INTO element (name, total_quantity) VALUES ('A', 4), ('B', 3), ('C', 3), ('D', 2) ON DUPLICATE KEY UPDATE name = VALUES(name), total_quantity = VALUES(total_quantity);
 
-### Game Flow
 ### Links：
 - [Trello board](https://trello.com/b/GG9OKmbC/challenger-flight-game-project)
 - [Project tracking sheet](https://docs.google.com/spreadsheets/d/1vuq3BxNBDeG4BTiAt0iLGx4ohJ9QgnmPnivLulsLMhw/edit?gid=0#gid=0)
