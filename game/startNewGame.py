@@ -13,7 +13,6 @@ connection = mysql.connector.connect(
     collation='utf8mb4_unicode_ci'
 )
 
-
 story = '''
 Your mission is to fly to different airports to collect 3 essential elements (A, B, and C) needed to 
 create a vaccine. A random airport will also contain a lucky box, which costs $100 to open. The lucky box may 
@@ -27,7 +26,12 @@ def getStory():
     return word_list
 
 def get_airports():
-    sql = """SELECT iso_country, ident, name, type, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type='large_airport' ORDER BY RAND() LIMIT 30;"""
+    sql = '''SELECT iso_country, ident, name, type, latitude_deg, longitude_deg 
+    FROM airport 
+    WHERE continent = 'EU' 
+    AND type='large_airport'
+    ORDER BY RAND() 
+    LIMIT 30; '''
     cursor = connection.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchall()
@@ -41,7 +45,6 @@ def get_element_name_by_id(element_id):
     result = cursor.fetchone()
     return result['name'] if result else None
 
-# Create new game and assign elements and lucky boxes
 def create_game(start_money, p_range, cur_airport, p_name, a_ports):
     cursor = connection.cursor(dictionary=True)
     # Insert new game
@@ -62,33 +65,30 @@ def create_game(start_money, p_range, cur_airport, p_name, a_ports):
     # Shuffle elements for random distribution
     shuffle(element_list)
 
-    # Assign elements to airports ensuring different countries and airports
+    # Assign elements to airports ensuring different airports
     assigned_airports = set()
-    assigned_countries = set()
-    #Ensure the first airport doesnot get assigned an element
-    assigned_airports.add(cur_airport) #Add current airport as already assigned
+    # Ensure the first airport does not get assigned an element
+    assigned_airports.add(cur_airport)  # Add current airport as already assigned
     for elem_id in element_list:
-        # Filter airports that are not yet assigned and in unique countries
-        available_ports = [port for port in a_ports if port['ident'] not in assigned_airports and port['iso_country'] not in assigned_countries]
+        # Filter airports that are not yet assigned
+        available_ports = [port for port in a_ports if port['ident'] not in assigned_airports]
         if not available_ports:
-            raise Exception("Not enough unique countries and airports to assign all elements.")
+            raise Exception("Not enough unique airports to assign all elements.")
         selected_port = choice(available_ports)
         assigned_airports.add(selected_port['ident'])
-        assigned_countries.add(selected_port['iso_country'])
         # Insert into port_contents
         element_name = get_element_name_by_id(elem_id)
         sql = "INSERT INTO port_contents (game_id, airport, content_type, content_value) VALUES (%s, %s, %s, %s);"
         cursor.execute(sql, (g_id, selected_port['ident'], 'element', element_name))
 
-# Assign 3 lucky boxes to different countries and airports
+    # Assign 3 lucky boxes to different airports
     for _ in range(3):
-        # Filter airports not yet assigned and in unique countries
-        available_ports = [port for port in a_ports if port['ident'] not in assigned_airports and port['iso_country'] not in assigned_countries]
+        # Filter airports not yet assigned
+        available_ports = [port for port in a_ports if port['ident'] not in assigned_airports]
         if not available_ports:
-            raise Exception("Not enough unique countries and airports to assign all lucky boxes.")
+            raise Exception("Not enough unique airports to assign all lucky boxes.")
         selected_port = choice(available_ports)
         assigned_airports.add(selected_port['ident'])
-        assigned_countries.add(selected_port['iso_country'])
         # Insert into port_contents
         sql = "INSERT INTO port_contents (game_id, airport, content_type) VALUES (%s, %s, %s);"
         cursor.execute(sql, (g_id, selected_port['ident'], 'lucky_box'))
@@ -187,7 +187,7 @@ if storyDialog.upper() == 'Y':
     print("If you collect all required elements within the budget provided at the start of the game, you win!")
 
 # GAME SETTINGS
-print('When you are ready to start, ')
+print('Press enter to start! ')
 player = input('Type player name: ')
 game_over = False
 win = False
@@ -220,7 +220,7 @@ except Exception as e:
 while not game_over:
     # Get current airport info
     airport = get_airport_info(current_airport)
-    print(f"You are at {airport['name']}.")
+    print(f"You are at {airport['name']}(ICAO: {airport['ident']}).base airport:{start_airport}")
     print(f"You have ${money:.0f} and {player_range:.0f}km of range.")
 
     # Option to buy extra range
@@ -266,20 +266,33 @@ while not game_over:
         game_over = True
     # Check for contents at new airport
     contents = check_port_contents(game_id, current_airport)
-    if contents:
-        for content in contents:
+    for content in contents:
+        if content['found'] == 0:
             if content['content_type'] == 'element':
-                print(f"You found Element {content['content_value']} at {current_airport}!")
-                # Add the element to the collected_elements list
-                if content['content_value'] not in collected_elements:
-                    collected_elements.append(content['content_value'])
-                # Mark the element as found
+                # Automatically collect the element
+                collected_elements.append(content['content_value'])
+                print(f"You found Element {content['content_value']} at {airport['name']}!")
                 mark_content_found(content['id'])
             elif content['content_type'] == 'lucky_box':
-                print(f"A lucky box is available at {current_airport}.")
-                # Handle the lucky box scenario if the player wants to open it.
-    else:
-        print(f"No content found at {current_airport}.")
+                # Ask if the player wants to open the lucky box
+                question = input('Do you want to open the lucky box by $100? (Y/N): ')
+                if question.upper() == 'Y':
+                    if money >= 100:
+                        money -= 100
+                        # Randomly decide the lucky box content
+                        lucky_box_result = random.choice(['A', 'B', 'C', 'D', 'Empty'])
+                        if lucky_box_result in ['A', 'B', 'C', 'D']:
+                            if lucky_box_result in collected_elements:
+                                print(f"The lucky box is empty. You already have Element {lucky_box_result}.")
+                            else:
+                                collected_elements.append(lucky_box_result)
+                                print(f"Congratulations! You found Element {lucky_box_result} in the lucky box.")
+                        else:
+                            print('The lucky box is empty.')
+                        mark_content_found(content['id'])
+                    else:
+                        print("You don't have enough money to open the lucky box.")
+
 
 # GAME OVER
 # Show game result
