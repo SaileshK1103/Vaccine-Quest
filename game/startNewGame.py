@@ -181,8 +181,8 @@ win = False
 
 # Start money = 1000
 money = 1000
-# Start range in km = 2000
-player_range = 2000
+# Start range in km = 6000
+player_range = 6000
 
 # Elements collected
 collected_elements = []
