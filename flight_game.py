@@ -269,7 +269,7 @@ def main():
         else:
             print(f"No content found at {current_airport}.")
     # GAME OVER,
-    # Show game result
+    # Show the result
     print(f"{'You won!' if win else 'You lost!'}")
     if win:
         print(f"Congratulations! You collected all required elements: {', '.join(collected_elements)}.")
