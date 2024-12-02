@@ -268,8 +268,7 @@ def main():
                             print("You don't have enough money to open the lucky box.")
         else:
             print(f"No content found at {current_airport}.")
-    # GAME OVER
-    # Show game result
+    # GAME OVER, Show game result
     print(f"{'You won!' if win else 'You lost!'}")
     if win:
         print(f"Congratulations! You collected all required elements: {', '.join(collected_elements)}.")
