@@ -281,3 +281,4 @@ def main():
     else:
         print("You didn't collect any elements.")
 
+k
